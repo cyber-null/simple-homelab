@@ -1,0 +1,64 @@
+networks:
+  internal:
+    external: true
+  proxy:
+    external: true
+
+services:
+  freshrss:
+    image: freshrss/freshrss:1.29
+    container_name: freshrss
+    restart: unless-stopped
+
+    # ports:
+    #   - "127.0.0.1:8080:80"
+    
+    volumes:
+      - ./data:/var/www/FreshRSS/data
+
+    env_file:
+        - .env
+
+    environment:
+      TZ: ${TZ:-UTC}
+      PUID: 1000
+      PGID: 1000
+
+      DB_BASE: postgres
+      DB_NAME: freshrss
+      DB_HOST: db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASS}
+      
+      CRON_MIN: ${CROM_MIN:-2,32}
+
+    healthcheck:
+      test: ["CMD", "cli/health.php"]
+      timeout: 10s
+      start_period: 60s
+      start_interval: 11s
+      interval: 75s
+      retries: 3
+
+    networks:
+      internal:
+      proxy:
+
+    # labels:
+    #   - traefik.enable=true
+    #   - traefik.http.middlewares.freshrssM1.compress=true
+    #   - traefik.http.middlewares.freshrssM2.headers.browserXssFilter=true
+    #   - traefik.http.middlewares.freshrssM2.headers.forceSTSHeader=true
+    #   - traefik.http.middlewares.freshrssM2.headers.frameDeny=true
+    #   - traefik.http.middlewares.freshrssM2.headers.referrerPolicy=no-referrer-when-downgrade
+    #   - traefik.http.middlewares.freshrssM2.headers.stsSeconds=31536000
+    #   - traefik.http.routers.freshrss.entryPoints=https
+    #   - traefik.http.routers.freshrss.tls.certResolver=letsEncrypt
+    #   - traefik.http.routers.freshrss.tls=true
+    #   # Option 1: server FreshRSS as sub-domain
+    #   - traefik.http.routers.freshrss.middlewares=freshrssM1,freshrssM2
+    #   - traefik.http.routers.freshrss.rule=Host(`${SERVER_DNS}`)
+    #   # # Option 2: serve FreshRSS as sub-path
+    #   # - traefik.http.middlewares.freshrssM3.stripprefix.prefixes=/freshrss
+    #   # - traefik.http.routers.freshrss.middlewares=freshrssM1,freshrssM2,freshrssM3
+    #   # - traefik.http.routers.freshrss.rule=PathPrefix(`/freshrss`)
