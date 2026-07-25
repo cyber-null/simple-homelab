@@ -1,0 +1,10 @@
+# env
+env/
+.env
+
+# backups
+backups/
+.bak
+
+
+
