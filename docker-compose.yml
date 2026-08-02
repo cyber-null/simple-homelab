@@ -1,4 +1,6 @@
 include:
+# revers proxy
+  - ./services/traefik/docker-compose.yml
 # db
   - ./services/postgres/docker-compose.yml
 # services
