@@ -15,7 +15,7 @@ services:
     
     volumes:
       - ./data:/var/www/FreshRSS/data
-      - ./themes:/var/www/FreshRSS/p/themes
+      # - ./themes:/var/www/FreshRSS/p/themes
 
     env_file:
         - .env
@@ -40,6 +40,12 @@ services:
       start_interval: 11s
       interval: 75s
       retries: 3
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.freshrss.rule=Host(`freshrss.docker.localhost`)"
+      - "traefik.http.routers.freshrss.entrypoints=websecure"
+      - "traefik.http.routers.freshrss.tls=true"
 
     networks:
       internal:
