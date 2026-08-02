@@ -1,0 +1,32 @@
+networks:
+  internal:
+    external: true
+    
+volumes:
+  postgres-data:
+
+services:
+
+  postgres:
+    image: postgres:18
+    container_name: postgres_db
+    restart: unless-stopped
+
+    volumes:
+      - ./data:/var/lib/postgresql
+      - ./initdb:/docker-entrypoint-initdb.d:ro
+
+    env_file:
+      - .env
+
+    environment:
+      TZ: ${TZ:-UTC}
+      PUID: 1000
+      PGID: 1000
+
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: homelab
+      
+    networks:
+      internal:
