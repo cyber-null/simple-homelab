@@ -1,5 +1,5 @@
 include:
 # db
-
+  - ./services/postgres/docker-compose.yml
 # services
   - ./services/freshrss/docker-compose.yml
