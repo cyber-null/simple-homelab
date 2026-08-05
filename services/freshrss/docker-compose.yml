@@ -22,8 +22,6 @@ services:
 
     environment:
       TZ: ${TZ:-UTC}
-      PUID: 1000
-      PGID: 1000
 
       DB_BASE: postgres
       DB_NAME: freshrss
