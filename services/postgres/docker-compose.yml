@@ -11,6 +11,8 @@ services:
     image: postgres:18
     container_name: postgres_db
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
 
     volumes:
       - ./data:/var/lib/postgresql
@@ -21,12 +23,16 @@ services:
 
     environment:
       TZ: ${TZ:-UTC}
-      PUID: 1000
-      PGID: 1000
 
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_DB: homelab
       
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${DB_USER:-postgres}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
     networks:
       internal:
