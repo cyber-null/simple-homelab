@@ -1,7 +1,12 @@
 include:
 # revers proxy
   - ./services/traefik/docker-compose.yml
+
 # db
   - ./services/postgres/docker-compose.yml
+
 # services
   - ./services/freshrss/docker-compose.yml
+
+# monitoring
+  - ./services/uptime-kuma/docker-compose.yml
