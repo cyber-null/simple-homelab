@@ -1,5 +1,5 @@
 networks:
-  monitoring:
+  proxy:
     external: true
 
 services:
@@ -26,9 +26,9 @@ services:
 
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.freshrss.rule=Host(`uptime.docker.localhost`)"
-      - "traefik.http.routers.freshrss.entrypoints=websecure"
-      - "traefik.http.routers.freshrss.tls=true"
+      - "traefik.http.routers.uptime.rule=Host(`uptime.docker.localhost`)"
+      - "traefik.http.routers.uptime.entrypoints=websecure"
+      - "traefik.http.routers.uptime.tls=true"
 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001"]
@@ -50,4 +50,4 @@ services:
           memory: 250M
 
     networks:
-        - monitoring
+        - proxy
