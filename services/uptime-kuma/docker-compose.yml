@@ -1,0 +1,53 @@
+networks:
+  monitoring:
+    external: true
+
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:2-slim
+    container_name: uptime-kuma
+    restart: unless-stopped
+
+    security_opt:
+      - no-new-privileges:true
+    # cap_drop:
+    #   - ALL
+
+    volumes:
+      - ./data:/app/data
+      # - /var/run/docker.sock:/var/run/docker.sock # monitoring docker services
+
+    # ports:
+    #   - "127.0.0.1:3001:3001"
+
+    environment:
+      TZ: ${TZ:-UTC}
+      # UMASK: 0022  # Set your file permissions manually
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.freshrss.rule=Host(`uptime.docker.localhost`)"
+      - "traefik.http.routers.freshrss.entrypoints=websecure"
+      - "traefik.http.routers.freshrss.tls=true"
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 250M
+
+    networks:
+        - monitoring
