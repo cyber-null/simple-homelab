@@ -22,19 +22,19 @@ A collection of self-hosted services managed with Docker Compose, designed for l
 
 
 ```text
- .
-├──  services
-│   ├──  freshrss
-│   │   └──  docker-compose.yml
-│   ├──  postgres
-│   │   ├──  initdb
-│   │   └──  docker-compose.yml
-│   ├──  traefik
-│   │   └──  docker-compose.yml
-│   └──  uptime-kuma
-│       └──  docker-compose.yml
-├── 󰂺 README.md
-└──  docker-compose.yml
+.
+├── services
+│   ├── freshrss
+│   │   └── docker-compose.yml
+│   ├── postgres
+│   │   ├── initdb
+│   │   └── docker-compose.yml
+│   ├── traefik
+│   │   └── docker-compose.yml
+│   └── uptime-kuma
+│       └── docker-compose.yml
+├── README.md
+└── docker-compose.yml
 ```
 
 ## Planned Services
